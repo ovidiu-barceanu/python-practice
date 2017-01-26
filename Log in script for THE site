@@ -1,0 +1,140 @@
+from splinter import Browser
+import time
+from time import sleep
+import sys
+
+#Dictionary containing the accounts used for tests and their passwords
+conturi = {'user1':'password', 'user2':'password'}
+
+
+#This simulates a loading bar
+def print_slowly(text):
+    for c in text:
+        print c,
+        sys.stdout.flush()
+        sleep(0.2)
+		
+#This is the function that makes the actual log in process
+def log_in(user_name, user_pass):
+	# Loads the firefox browser. Profile is set so the register pop up would not be displayed
+	browser= Browser('firefox', profile = r'C:\Users\Ovidiu Berceanu\AppData\Roaming\Mozilla\Firefox\Profiles\qg2poa9o.ovidiu')
+
+
+	#open a web page ()
+	browser.visit('https://www.randompage.com/ro/')
+
+	print 'Accessing Site'
+	print_slowly('........')
+	print
+	print
+
+
+	# fills the user name field in the login section 
+	browser.fill('srch-term', user_name)
+
+	#fills the password section. 
+	#An unknown error makes the direct browser.fill function to return element not found with if searching txtPass
+	#So we first search the password input field by Id and add it in a variable
+	password = browser.find_by_id('txtPass')
+	password.fill(user_pass)
+	
+	print 'Inserting Username and Password'
+	print_slowly('........')
+	print
+	print
+	
+	
+	#selects the login button to log in with details given
+	login = browser.find_by_id('btnLogin')
+	login.click()
+	print 'Logging in'
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+
+	
+	#Access My Account
+	browser.click_link_by_href('/en/myaccount/')
+	print "access my account"
+	#Loading bar
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+
+	#Access Deposit Methods
+	browser.click_link_by_href('/en/myaccount/deposit/')
+	print "Acccess Deposit Methods"
+	#Loading bar
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+
+
+	browser.click_link_by_href('/en/myaccount/transaction-history/')
+	print "Acccess transaction hystory"
+	#Loading bar
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+
+	#Access Bet History
+	bet = browser.find_by_xpath('/html/body/div[1]/div[3]/div/div[1]/div/div/span[17]/a')
+	bet.click()
+	print "Access Bet History"
+	#Loading bar
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+	
+#need to finde solution to close bet history pop up
+	#Close Bet History
+	close = browser.find_by_xpath('/html/body/div[3]/div/div/div[1]/div[1]/div/span[6]/button')
+	close.click()
+	print "Close Bet History"
+	#Loading bar
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+	
+#can't move forward due to the fact that the pop up history bet is not closed
+	account = browser.find_by_id('logoutUser')
+	account.click()
+	print 'logging out'
+	print_slowly('........')
+	time.sleep(5)
+	print
+	print
+	
+	browser.quit()
+	print 'Status for', user_name,' and ', user_pass, ' is ' 
+	print_slowly('Passed')
+	print
+	print
+	print
+
+	
+
+
+
+#This fucntion takes the log_in functions throught all the accounts available in teh dictionary
+def round(dict):
+	for key in dict:
+		log_in(key, dict[key])
+		
+	print 
+	print
+	print 'Script Ended'
+		
+			
+				
+				
+				
+
+
+round(conturi)
